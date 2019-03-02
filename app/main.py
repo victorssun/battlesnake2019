@@ -94,7 +94,6 @@ def move():
     snake = pd.DataFrame(data['you']['body'])
     snake_diff = snake - snake.loc[0]
     snake_diff = snake_diff.isin([-1, 0, 1])
-#    len(snake_diff)
 
     x = []
     y = []
@@ -105,6 +104,18 @@ def move():
             y.append(y_temp)
     snake_diff = np.array([x,y])
     
+    for j in range(len(data['board']['snakes'])):
+        snake = pd.DataFrame(data['board']['snakes'][j]['body'])
+        snake_diff = snake - snake.loc[0]
+        snake_diff = snake_diff.isin([-1, 0, 1])
+    
+        for i in range(len(snake_diff)):
+            if snake_diff.loc[i].sum() == 2:
+                x_temp, y_temp = snake.loc[i]['x'], snake.loc[i]['y']
+                x.append(x_temp)
+                y.append(y_temp)
+        snake_diff = np.array([x,y])        
+        
     if sum(data['you']['body'][0]['x'] + 1 == snake_diff[0]) != 0: # move to right and true then don't move right
         not_directions.append('right')
     elif sum(data['you']['body'][0]['x'] - 1 == snake_diff[0]) != 0: # move to left and true then don't move left
