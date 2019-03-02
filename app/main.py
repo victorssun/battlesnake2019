@@ -103,7 +103,7 @@ def move():
             x.append(x_temp)
             y.append(y_temp)
 #    snake_diff = np.array([x,y])
-    
+
     for j in range(len(data['board']['snakes'])):
         snake_enem = pd.DataFrame(data['board']['snakes'][j]['body'])
         snake_diff = snake_enem - snake.loc[0]
@@ -111,7 +111,7 @@ def move():
     
         for i in range(len(snake_diff)):
             if snake_diff.loc[i].sum() == 2:
-                x_temp, y_temp = snake.loc[i]['x'], snake.loc[i]['y']
+                x_temp, y_temp = snake_enem.loc[i]['x'], snake_enem.loc[i]['y']
                 x.append(x_temp)
                 y.append(y_temp)
         snake_diff = np.array([x,y])
@@ -125,12 +125,25 @@ def move():
     if sum(data['you']['body'][0]['y'] + 1 == snake_diff_final[1]) != 0: # move to down and true then don't move down
         not_directions.append('down')
     elif sum(data['you']['body'][0]['y'] - 1 == snake_diff_final[1]) != 0: # move to up and true then don't move up
-        not_directions.append('up')        
+        not_directions.append('up')
 
     directions = ['up', 'down', 'left', 'right']
     
     for each in not_directions:
         directions.remove(each)
+    
+    # find food
+#    food = pd.DataFrame(data['board']['food'])
+#    food_diff = food - snake.loc[0]
+#    food_diff = food_diff.isin([-1, 0, 1])
+#    
+#    x_pref = []
+#    y_pref = []
+#    for i in range(len(food_diff)):
+#        if food_diff.loc[i].sum() == 2:
+#            x_temp, y_temp = snake.loc[i]['x'], snake.loc[i]['y']
+#            x_pref.append(x_temp)
+#            y_pref.append(y_temp)
     
     direction = random.choice(directions)
 
