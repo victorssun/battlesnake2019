@@ -103,11 +103,14 @@ def move():
             x.append(x_temp)
             y.append(y_temp)
 #    snake_diff = np.array([x,y])
-
+    
+    x_diff2 = []
+    y_diff2 = []
     for j in range(len(data['board']['snakes'])):
         snake_enem = pd.DataFrame(data['board']['snakes'][j]['body'])
-        snake_diff = snake_enem - snake.loc[0]
-        snake_diff = snake_diff.isin([-2, -1, 0, 1, 2])
+        snake_diff_temp = snake_enem - snake.loc[0]
+        snake_diff = snake_diff_temp.isin([-2, -1, 0, 1, 2])
+        snake_diff2 = snake_diff_temp.isin([-2, 2])
     
         for i in range(len(snake_diff)):
             if snake_diff.loc[i].sum() == 2:
@@ -115,6 +118,13 @@ def move():
                 x.append(x_temp)
                 y.append(y_temp)
 #        snake_diff = np.array([x,y])
+                
+        for i in range(len(snake_diff2)):
+            if snake_diff2.loc[i].sum() == 2:
+                x_temp, y_temp = snake_enem.loc[i]['x'], snake_enem.loc[i]['y']
+                x_diff2.append(x_temp)
+                y_diff2.append(y_temp)
+                
     snake_diff_final = np.array([x, y])
         
     if sum(data['you']['body'][0]['x'] + 1 == snake_diff_final[0]) != 0: # move to right and true then don't move right
@@ -127,10 +137,28 @@ def move():
     elif sum(data['you']['body'][0]['y'] - 1 == snake_diff_final[1]) != 0: # move to up and true then don't move up
         not_directions.append('up')
 
+# diff2
+    not_directions_diff2 = not_directions    
+    snake_diff_final2 = np.array([x_diff2, y_diff2])
+    if sum(data['you']['body'][0]['x'] + 1 == snake_diff_final2[0]) != 0: # move to right and true then don't move right
+        not_directions_diff2.append('right')
+    elif sum(data['you']['body'][0]['x'] - 1 == snake_diff_final2[0]) != 0: # move to left and true then don't move left
+        not_directions_diff2.append('left')
+        
+    if sum(data['you']['body'][0]['y'] + 1 == snake_diff_final2[1]) != 0: # move to down and true then don't move down
+        not_directions_diff2.append('down')
+    elif sum(data['you']['body'][0]['y'] - 1 == snake_diff_final2[1]) != 0: # move to up and true then don't move up
+        not_directions_diff2.append('up')
+
+    
     directions = ['up', 'down', 'left', 'right']
     
-    for each in not_directions:
-        directions.remove(each)
+    if len(not_directions_diff2) == 4:
+        for each in not_directions:
+            directions.remove(each)
+    else:
+        for each in not_directions_diff2:
+            directions.remove(each)        
     
     # find food
 #    food = pd.DataFrame(data['board']['food'])
@@ -147,7 +175,6 @@ def move():
     
     direction = random.choice(directions)
 
-#    print(ms)
     return move_response(direction)
 
 @bottle.post('/end')
