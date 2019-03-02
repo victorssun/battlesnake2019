@@ -107,7 +107,7 @@ def move():
     for j in range(len(data['board']['snakes'])):
         snake_enem = pd.DataFrame(data['board']['snakes'][j]['body'])
         snake_diff = snake_enem - snake.loc[0]
-        snake_diff = snake_diff.isin([-1, 0, 1])
+        snake_diff = snake_diff.isin([-2, -1, 0, 1, 2])
     
         for i in range(len(snake_diff)):
             if snake_diff.loc[i].sum() == 2:
