@@ -8,7 +8,6 @@ from api import ping_response, start_response, move_response, end_response
 #os.path('C:/Users/A/Desktop/K/Projects/battlesnake/snake/app/')
 #import snake_functions
 import numpy as np
-import time
 import pandas as pd
 
 # snake joke #battlesnake2019
@@ -67,7 +66,6 @@ def start():
 @bottle.post('/move')
 def move():
     data = bottle.request.json
-    a = time.time()
     
     """
     TODO: Using the data from the endpoint request object, your
@@ -124,8 +122,6 @@ def move():
     
     direction = random.choice(directions)
 
-    b = time.time()
-    ms = (b - a) * 1000
 #    print(ms)
     return move_response(direction)
 
