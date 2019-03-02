@@ -114,7 +114,7 @@ def move():
                 x_temp, y_temp = snake_enem.loc[i]['x'], snake_enem.loc[i]['y']
                 x.append(x_temp)
                 y.append(y_temp)
-        snake_diff = np.array([x,y])
+#        snake_diff = np.array([x,y])
     snake_diff_final = np.array([x, y])
         
     if sum(data['you']['body'][0]['x'] + 1 == snake_diff_final[0]) != 0: # move to right and true then don't move right
